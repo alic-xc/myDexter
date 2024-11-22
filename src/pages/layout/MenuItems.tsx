@@ -1,5 +1,4 @@
 import {
-  Toolbar,
   Divider,
   List,
   ListItem,
@@ -17,6 +16,9 @@ import AnalyticsIcon from "../../icons/AnalyticsIcon";
 import BlogWriterIcon from "../../icons/BlogWriterIcon";
 import SignInIcon from "../../icons/SignInIcon";
 import MenuIcon from "../../icons/MenuIcon";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import SignUp from "../auth/SignUp";
 
 interface nav {
   icon: React.ReactNode;
@@ -25,12 +27,32 @@ interface nav {
 }
 
 const MenuItems = () => {
+  const navigate = useNavigate();
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const location = useLocation();
+
   const navs: nav[] = [
     { icon: <MagicAIIcon />, name: "Dexter AI", link: "" },
     { icon: <AnalyticsIcon />, name: "Analytics", link: "" },
     { icon: <BlogWriterIcon />, name: "Blog Post", link: "" },
     { icon: <SignInIcon />, name: "Sign In", link: "" },
   ];
+
+  useEffect(() => {
+    if (location.pathname === "/signup") {
+      setIsModalOpen(true);
+    } else {
+      setIsModalOpen(false);
+    }
+  }, [location]);
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleOpenSignup = () => {
+    navigate("/signup", { state: { from: location.pathname } });
+  };
 
   return (
     <Box>
@@ -84,6 +106,7 @@ const MenuItems = () => {
         </Typography>
         <Button
           variant="outlined"
+          onClick={handleOpenSignup}
           sx={{
             borderWidth: 2,
             fontSize: 18,
@@ -108,6 +131,7 @@ const MenuItems = () => {
         </Typography>
         <Typography>© 2024 My Dexter</Typography>
       </Stack>
+      <SignUp isOpen={isModalOpen} onClose={handleCloseModal} />
     </Box>
   );
 };

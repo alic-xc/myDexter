@@ -1,3 +1,4 @@
+import SignIn from "../pages/auth/SignIn";
 import Dashboard from "../pages/dashboard/Dashboard";
 import MainLayout from "../pages/layout/MainLayout";
 
@@ -12,7 +13,7 @@ const MainRoutes = [
         element: <Dashboard />,
         children: [
           {
-            path: "dashboard",
+            path: "/*",
             element: <Dashboard />,
           },
         ],
